@@ -6647,6 +6647,7 @@ p {
 			'pwa_inline_scripts_and_styles',
 			'pwa_remove_remote_fonts',
 			'pwa_show_network_status',
+			'pwa_lazy_images',
 		);
 
 		// Flag some Jetpack options as unsafe
