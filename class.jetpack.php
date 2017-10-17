@@ -6644,10 +6644,11 @@ p {
 			'jetpack_dismissed_notices',
 			'pwa_cache_assets',
 			'pwa_web_push',
-			'pwa_inline_scripts_and_styles',
-			'pwa_remove_remote_fonts',
 			'pwa_show_network_status',
-			'pwa_lazy_images',
+			'perf_inline_scripts_and_styles',
+			'perf_inline_on_every_request',
+			'perf_remove_remote_fonts',
+			'perf_lazy_images',
 		);
 
 		// Flag some Jetpack options as unsafe
