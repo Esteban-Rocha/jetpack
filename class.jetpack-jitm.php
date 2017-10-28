@@ -190,7 +190,12 @@ class Jetpack_JITM {
 	 * @return bool Always true
 	 */
 	function dismiss( $id, $feature_class ) {
-		// todo: track dismissal of id and feature class?
+		JetpackTracking::record_user_event( 'jitm_dismiss_client', array(
+			'jitm_id' => $id,
+			'feature_class' => $feature_class,
+		) );
+
+
 		$hide_jitm = Jetpack_Options::get_option( 'hide_jitm' );
 		if ( ! is_array( $hide_jitm ) ) {
 			$hide_jitm = array();
@@ -306,8 +311,8 @@ class Jetpack_JITM {
 
 			$dismissed_feature = isset( $hidden_jitms[ $envelope->feature_class ] ) && is_array( $hidden_jitms[ $envelope->feature_class ] ) ? $hidden_jitms[ $envelope->feature_class ] : null;
 
-			// if the this feature class has been dismissed and the request has not expired from the cache, skip it as it's been dismissed
-			if ( is_array( $dismissed_feature ) && $from_cache && time() - $dismissed_feature['last_dismissal'] < $expiration + 60 ) {
+			// if the this feature class has been dismissed and the request has not passed the ttl, skip it as it's been dismissed
+			if ( is_array( $dismissed_feature ) && ( time() - $dismissed_feature['last_dismissal'] < $envelope->expires || $dismissed_feature['number'] >= $envelope->max_dismissal ) ) {
 				unset( $envelopes[ $idx ] );
 				continue;
 			}
