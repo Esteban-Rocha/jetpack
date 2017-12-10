@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Component } from 'react';
 import { translate as __ } from 'i18n-calypso';
@@ -10,7 +11,7 @@ import Button from 'components/button';
  * Internal dependencies
  */
 import JetpackDialogue from 'components/jetpack-dialogue';
-import { imagePath } from 'constants';
+import { imagePath } from 'constants/urls';
 
 class UpgradeNoticeContent extends Component {
 	renderInnerContent() {
@@ -66,7 +67,7 @@ class UpgradeNoticeContent extends Component {
 }
 
 JetpackDialogue.propTypes = {
-	dismiss: React.PropTypes.func
+	dismiss: PropTypes.func
 };
 
 export default UpgradeNoticeContent;

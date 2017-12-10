@@ -197,7 +197,16 @@ class Jetpack_Carousel {
 
 	function enqueue_assets() {
 		if ( $this->first_run ) {
-			wp_enqueue_script( 'jetpack-carousel', plugins_url( 'jetpack-carousel.js', __FILE__ ), array( 'jquery.spin' ), $this->asset_version( '20170209' ), true );
+			wp_enqueue_script(
+				'jetpack-carousel',
+				Jetpack::get_file_url_for_environment(
+					'_inc/build/carousel/jetpack-carousel.min.js',
+					'modules/carousel/jetpack-carousel.js'
+				),
+				array( 'jquery.spin' ),
+				$this->asset_version( '20170209' ),
+				true
+			);
 
 			// Note: using  home_url() instead of admin_url() for ajaxurl to be sure  to get same domain on wpcom when using mapped domains (also works on self-hosted)
 			// Also: not hardcoding path since there is no guarantee site is running on site root in self-hosted context.
@@ -348,7 +357,6 @@ class Jetpack_Carousel {
 		foreach( $matches[0] as $image_html ) {
 			if ( preg_match( '/wp-image-([0-9]+)/i', $image_html, $class_id ) &&
 				( $attachment_id = absint( $class_id[1] ) ) ) {
-
 				/*
 				 * If exactly the same image tag is used more than once, overwrite it.
 				 * All identical tags will be replaced later with 'str_replace()'.
@@ -359,8 +367,14 @@ class Jetpack_Carousel {
 
 		$find        = array();
 		$replace     = array();
+		if ( empty( $selected_images ) ) {
+			return $content;
+		}
+
 		$attachments = get_posts( array(
 			'include' => array_keys( $selected_images ),
+			'post_type' => 'any',
+			'post_status' => 'any'
 		) );
 
 		foreach ( $attachments as $attachment ) {

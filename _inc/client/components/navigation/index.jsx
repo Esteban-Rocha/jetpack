@@ -1,15 +1,14 @@
 /**
  * External dependencies
  */
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import SectionNav from 'components/section-nav';
 import NavTabs from 'components/section-nav/tabs';
 import NavItem from 'components/section-nav/item';
 import { translate as __ } from 'i18n-calypso';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import analytics from 'lib/analytics';
-injectTapEventPlugin();
 
 /**
  * Internal dependencies
@@ -67,7 +66,7 @@ export const Navigation = React.createClass( {
 } );
 
 Navigation.propTypes = {
-	route: React.PropTypes.object.isRequired
+	route: PropTypes.object.isRequired
 };
 
 export default connect(

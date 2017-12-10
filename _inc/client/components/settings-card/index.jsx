@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { translate as __ } from 'i18n-calypso';
@@ -81,9 +82,9 @@ export const SettingsCard = props => {
 
 		switch ( feature ) {
 			case FEATURE_VIDEO_HOSTING_JETPACK:
-				if ( 
+				if (
 					'is-premium-plan' === planClass ||
-					'is-business-plan' === planClass 
+					'is-business-plan' === planClass
 				) {
 					return '';
 				}
@@ -256,7 +257,6 @@ export const SettingsCard = props => {
 						<Button
 							primary
 							compact
-							isSubmitting={ isSaving }
 							onClick={ isSaving ? () => {} : props.onSubmit }
 							disabled={ isSaving || ! props.isDirty() }>
 							{
@@ -278,8 +278,8 @@ export const SettingsCard = props => {
 };
 
 SettingsCard.propTypes = {
-	action: React.PropTypes.string,
-	saveDisabled: React.PropTypes.bool
+	action: PropTypes.string,
+	saveDisabled: PropTypes.bool
 };
 
 SettingsCard.defaultProps = {

@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import SectionNav from 'components/section-nav';
@@ -9,8 +10,6 @@ import NavItem from 'components/section-nav/item';
 import Search from 'components/search';
 import { translate as __ } from 'i18n-calypso';
 import noop from 'lodash/noop';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
 import UrlSearch from 'mixins/url-search';
 import analytics from 'lib/analytics';
 import intersection from 'lodash/intersection';
@@ -249,17 +248,17 @@ export const NavigationSettings = React.createClass( {
 } );
 
 NavigationSettings.contextTypes = {
-	router: React.PropTypes.object.isRequired
+	router: PropTypes.object.isRequired
 };
 
 NavigationSettings.propTypes = {
-	userCanManageModules: React.PropTypes.bool.isRequired,
-	isSubscriber: React.PropTypes.bool.isRequired,
-	userCanPublish: React.PropTypes.bool.isRequired,
-	isLinked: React.PropTypes.bool.isRequired,
-	isSiteConnected: React.PropTypes.bool.isRequired,
-	isModuleActivated: React.PropTypes.func.isRequired,
-	searchHasFocus: React.PropTypes.bool.isRequired
+	userCanManageModules: PropTypes.bool.isRequired,
+	isSubscriber: PropTypes.bool.isRequired,
+	userCanPublish: PropTypes.bool.isRequired,
+	isLinked: PropTypes.bool.isRequired,
+	isSiteConnected: PropTypes.bool.isRequired,
+	isModuleActivated: PropTypes.func.isRequired,
+	searchHasFocus: PropTypes.bool.isRequired
 };
 
 NavigationSettings.defaultProps = {

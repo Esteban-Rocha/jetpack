@@ -623,6 +623,26 @@ class WP_Test_Jetpack_Sync_Functions extends WP_Test_Jetpack_Sync_Base {
 		$this->assertEquals( $plugins_action_links, $expected_array );
 	}
 
+	function cause_fatal_error( $actions ) {
+		unset( $actions['activate'] );
+		$actions[] = '<a href="/hello">world</a>';
+		return $actions;
+	}
+
+	function test_fixes_fatal_error( ) {
+
+		delete_transient( 'jetpack_plugin_api_action_links_refresh' );
+		add_filter( 'plugin_action_links', array( $this, 'cause_fatal_error' ) );
+		$callables_module = new Jetpack_Sync_Module_Callables(); // Do the admin init here so that we calculate the plugin links
+		$callables_module->set_plugin_action_links();
+
+		$this->resetCallableAndConstantTimeouts();
+		$callables_module->set_plugin_action_links();
+		$this->sender->do_sync();
+		$plugins_action_links = $this->server_replica_storage->get_callable( 'get_plugins_action_links' );
+		$this->assertTrue( isset( $plugins_action_links['hello.php']['world'] ) );
+	}
+
 	function __return_filtered_url() {
 		return 'http://filteredurl.com';
 	}
@@ -664,8 +684,44 @@ class WP_Test_Jetpack_Sync_Functions extends WP_Test_Jetpack_Sync_Base {
 		}
 
 	}
+
+	function test_force_sync_callabled_on_plugin_update() {
+		// fake the cron so that we really prevent the callables from being called
+		Jetpack_Sync_Settings::$is_doing_cron = true;
+
+		$this->callable_module->set_callable_whitelist( array( 'jetpack_foo' => 'jetpack_foo_is_callable_random' ) );
+		$this->sender->do_sync();
+		$synced_value = $this->server_replica_storage->get_callable( 'jetpack_foo' );
+
+		$this->server_replica_storage->reset();
+
+		$synced_value2 = $this->server_replica_storage->get_callable( 'jetpack_foo' );
+		$this->assertEmpty( $synced_value2 );
+
+		$upgrader = (object) array(
+			'skin' => (object) array(
+				'result' => new WP_Error( 'fail' )
+			)
+		);
+
+		do_action( 'upgrader_process_complete', $upgrader, array(
+			'action' => 'update',
+			'type' => 'plugin',
+			'bulk' => true,
+			'plugins' => 'the/the.php',
+		) );
+
+		$this->sender->do_sync();
+		$synced_value3 = $this->server_replica_storage->get_callable( 'jetpack_foo' );
+		Jetpack_Sync_Settings::$is_doing_cron = false;
+		$this->assertNotEmpty( $synced_value3, 'value is empty!' );
+
+	}
 }
 
+function jetpack_foo_is_callable_random() {
+	return rand();
+}
 /* Example Test Taxonomy */
 class ABC_FOO_TEST_Taxonomy_Example {
 	function __construct() {

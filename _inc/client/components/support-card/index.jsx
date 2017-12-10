@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -25,7 +26,7 @@ import {
 } from 'state/site';
 import { getSiteConnectionStatus } from 'state/connection';
 import JetpackBanner from 'components/jetpack-banner';
-import { JETPACK_CONTACT_SUPPORT } from 'constants';
+import { JETPACK_CONTACT_SUPPORT } from 'constants/urls';
 
 const SupportCard = React.createClass( {
 	displayName: 'SupportCard',
@@ -129,8 +130,8 @@ const SupportCard = React.createClass( {
 } );
 
 SupportCard.propTypes = {
-	siteConnectionStatus: React.PropTypes.any.isRequired,
-	className: React.PropTypes.string
+	siteConnectionStatus: PropTypes.any.isRequired,
+	className: PropTypes.string
 };
 
 export default connect(

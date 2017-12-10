@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -12,7 +13,7 @@ import analytics from 'lib/analytics';
 /**
  * Internal dependencies
  */
-import { imagePath } from 'constants';
+import { imagePath } from 'constants/urls';
 import { updateSettings, appsCardDismissed } from 'state/settings';
 import { arePromotionsActive } from 'state/initial-state';
 
@@ -85,7 +86,7 @@ const AppsCard = React.createClass( {
 } );
 
 AppsCard.propTypes = {
-	className: React.PropTypes.string
+	className: PropTypes.string
 };
 
 export default connect(
